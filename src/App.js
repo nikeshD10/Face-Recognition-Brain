@@ -15,6 +15,7 @@ export default class App extends Component {
       input: "",
       imageUrl: "",
       boxes: [],
+      route: "signin",
     };
   }
 
@@ -106,21 +107,31 @@ export default class App extends Component {
       .catch((error) => console.log("error", error));
   };
 
+  onRouteChange = (route) => {
+    this.setState({ route: route });
+  };
+
   render() {
     return (
       <div className="App">
         <ParticlesBg type="cobweb" color="#FFFFFF" bg={true} />
-        <Navigation />
-        <Logo />
-        <Rank />
-        <ImageLinkForm
-          onInputChange={this.onInputChange}
-          onSubmit={this.onSubmit}
-        />
-        <FaceRecognition
-          boxes={this.state.boxes}
-          imageUrl={this.state.imageUrl}
-        />
+        {this.state.route === "signin" ? (
+          <SignIn onRouteChange={this.onRouteChange} />
+        ) : (
+          <>
+            <Navigation onRouteChange={this.onRouteChange} />
+            <Logo />
+            <Rank />
+            <ImageLinkForm
+              onInputChange={this.onInputChange}
+              onSubmit={this.onSubmit}
+            />
+            <FaceRecognition
+              boxes={this.state.boxes}
+              imageUrl={this.state.imageUrl}
+            />
+          </>
+        )}
       </div>
     );
   }
