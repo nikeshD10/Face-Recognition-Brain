@@ -1,5 +1,4 @@
 import React from "react";
-// import "../SignIn/SignIn.css";
 
 export default function Register({ onRouteChange }) {
   return (
