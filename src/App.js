@@ -13,11 +13,34 @@ export default class App extends Component {
     this.state = {
       input: "",
       imageUrl: "",
+      boxes: [],
     };
   }
 
   onInputChange = (event) => {
     this.setState({ input: event.target.value });
+  };
+
+  calculateFaceLocation = (result) => {
+    const numOfFace = result.outputs[0].data.regions.length;
+    const image = document.getElementById("inputImage");
+    const regionsTemp = [];
+    for (let i = 0; i < numOfFace; i++) {
+      const region = result.outputs[0].data.regions[i].region_info.bounding_box;
+      regionsTemp.push(this.convertIntoPixels(region, image));
+    }
+    this.setState({ boxes: regionsTemp });
+  };
+
+  convertIntoPixels = (regionInPercent, image) => {
+    const width = Number(image.width);
+    const height = Number(image.height);
+    return {
+      leftCol: regionInPercent.left_col * width,
+      topRow: regionInPercent.top_row * height,
+      rightCol: width - regionInPercent.right_col * width,
+      bottomRow: height - regionInPercent.bottom_row * height,
+    };
   };
 
   onSubmit = () => {
@@ -78,9 +101,7 @@ export default class App extends Component {
       requestOptions
     )
       .then((response) => response.json())
-      .then((result) =>
-        console.log(result.outputs[0].data.regions[0].region_info.bounding_box)
-      )
+      .then((result) => this.calculateFaceLocation(result))
       .catch((error) => console.log("error", error));
   };
 
@@ -95,7 +116,10 @@ export default class App extends Component {
           onInputChange={this.onInputChange}
           onSubmit={this.onSubmit}
         />
-        <FaceRecognition imageUrl={this.state.imageUrl} />
+        <FaceRecognition
+          boxes={this.state.boxes}
+          imageUrl={this.state.imageUrl}
+        />
       </div>
     );
   }
