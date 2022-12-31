@@ -28,6 +28,18 @@ export default class App extends Component {
     };
   }
 
+  loadUser = (data) => {
+    this.setState({
+      user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        entries: data.entries,
+        joined: data.joined,
+      },
+    });
+  };
+
   onInputChange = (event) => {
     this.setState({ input: event.target.value });
   };
@@ -145,7 +157,10 @@ export default class App extends Component {
             <FaceRecognition boxes={boxes} imageUrl={imageUrl} />
           </>
         ) : route === "register" ? (
-          <Register onRouteChange={this.onRouteChange} />
+          <Register
+            onRouteChange={this.onRouteChange}
+            loadUser={this.loadUser}
+          />
         ) : (
           <SignIn onRouteChange={this.onRouteChange} />
         )}

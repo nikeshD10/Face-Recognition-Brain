@@ -23,7 +23,7 @@ export default class Register extends Component {
   };
 
   onSubmitRegister = () => {
-    fetch("http://localhost:3000/signin", {
+    fetch("http://localhost:3000/register", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -37,13 +37,13 @@ export default class Register extends Component {
       .then((res) => res.json())
       .then((user) => {
         // since our onregister function  in server returns users
-        if (data === "success") {
+        if (user) {
+          this.props.loadUser(user);
           this.props.onRouteChange("home");
         }
       });
   };
   render() {
-    const { onRouteChange } = this.props;
     return (
       <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l shadow-5 center">
         <main className="pa4 black-80 w-100  ">
