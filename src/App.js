@@ -124,7 +124,22 @@ export default class App extends Component {
       requestOptions
     )
       .then((response) => response.json())
-      .then((result) => this.calculateFaceLocation(result))
+      .then((result) => {
+        if (result) {
+          fetch("http://localhost:3000/image", {
+            method: "put",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id: this.state.user.id,
+            }),
+          })
+            .then((response) => response.json())
+            .then((res_entries) => {
+              this.setState({ user: { entries: res_entries } });
+            });
+        }
+        this.calculateFaceLocation(result);
+      })
       .catch((error) => console.log("error", error));
   };
 
@@ -149,7 +164,10 @@ export default class App extends Component {
         {route === "home" ? (
           <>
             <Logo />
-            <Rank />
+            <Rank
+              name={this.state.user.name}
+              entries={this.state.user.entries}
+            />
             <ImageLinkForm
               onInputChange={this.onInputChange}
               onSubmit={this.onSubmit}
@@ -162,7 +180,7 @@ export default class App extends Component {
             loadUser={this.loadUser}
           />
         ) : (
-          <SignIn onRouteChange={this.onRouteChange} />
+          <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
         )}
       </div>
     );
