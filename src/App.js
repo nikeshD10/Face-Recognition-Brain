@@ -135,7 +135,9 @@ export default class App extends Component {
           })
             .then((response) => response.json())
             .then((res_entries) => {
-              this.setState({ user: { entries: res_entries } });
+              this.setState(
+                Object.assign(this.state.user, { entries: res_entries })
+              );
             });
         }
         this.calculateFaceLocation(result);
