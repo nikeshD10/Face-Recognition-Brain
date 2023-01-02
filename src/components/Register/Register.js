@@ -23,7 +23,7 @@ export default class Register extends Component {
   };
 
   onSubmitRegister = () => {
-    fetch("face-recognition-api.up.railway.app/register", {
+    fetch("https://face-recognition-api.up.railway.app/register", {
       method: "post",
       headers: {
         "Content-Type": "application/json",

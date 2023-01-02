@@ -71,7 +71,7 @@ export default class App extends Component {
   onSubmit = () => {
     this.setState({ imageUrl: this.state.input });
 
-    fetch("face-recognition-api.up.railway.app/imageurl", {
+    fetch("https://face-recognition-api.up.railway.app/imageurl", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -83,7 +83,7 @@ export default class App extends Component {
         console.log(result);
         this.calculateFaceLocation(result);
         if (result) {
-          fetch("face-recognition-api.up.railway.app/image", {
+          fetch("https://face-recognition-api.up.railway.app/image", {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
