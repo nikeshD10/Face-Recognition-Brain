@@ -18,7 +18,7 @@ export default class SignIn extends Component {
   };
 
   onSubmitSignIn = () => {
-    fetch("http://localhost:3000/signin", {
+    fetch("face-recognition-api.up.railway.app/signin", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
